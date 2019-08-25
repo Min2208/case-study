@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game</title>
+    <style>
+        table {
+            width: 800px;
+            border: 1px solid red;
+        }
+
+        td {
+            width: 150px;
+            border: 1px solid blue;
+        }
+
+        button {
+            background-color: blue;
+        }
+        .row{
+            float: left;
+            height: 500px;
+        }
+        #manual{
+            padding-left: 50px;
+            border: 1px solid blue;
+        }
+        li{
+            height: 40px;
+            padding-top: 5px;
+        }
+        #gameover{
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="row">
+        <canvas id="gameCanvas" width="800px" height="500px" style="border: 1px solid blue;"></canvas>
+    </div>
+    <div class="row" id="manual">
+        <h4>Manual</h4>
+        <ul>
+            <li id="gameover">Game Over:
+                <ul>
+                    <li>Total boom = 10</li>
+                    <li>Crash boom or wall</li>
+                </ul>
+            </li>
+            <li>Grasp Diamond: +500 score and total boom -1</li>
+            <li>Press Space: up speed</li>
+            <li>Press Ctrl: down speed</li>
+            <li>Arrow Left: Move left</li>
+            <li>Arrow Right: Move right</li>
+            <li>Arrow Up: Move Up</li>
+            <li>Arrow Down: Move down</li>
+        </ul>
+
+    </div>
+</div>
+<div>
+
+    <table>
+        <tr>
+            <td>Your score:</td>
+            <td id="score"></td>
+            <td>Total boom:</td>
+            <td id="boom"></td>
+            <td>Car Speed:</td>
+            <td id="speed"></td>
+        </tr>
+    </table>
+    <button onclick="gameBoard.start()">Start Game</button>
+
+</div>
+<script src="car.js">
+</script>
+</body>
+</html>
