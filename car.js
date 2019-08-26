@@ -7,8 +7,8 @@ const ORIENTATION_RIGHT = "right";
 const ORIENTATION_UP = "up";
 const ORIENTATION_DOWN = "down";
 
-const DEFAULT_CAR_X_POSITION = 100;
-const DEFAULT_CAR_Y_POSITION = 100;
+const DEFAULT_CAR_X_POSITION = 450;
+const DEFAULT_CAR_Y_POSITION = 250;
 const DEFAULT_CAR_ORIENTATION = ORIENTATION_UP;
 const DEFAULT_CAR_SPEED = 10;
 
@@ -80,7 +80,6 @@ function Car() {
         xClear = xPosition;
         yClear = yPosition;
 
-
         image.onload = function () {
             ctx.drawImage(image, xPosition, yPosition);
         };
@@ -127,12 +126,10 @@ function Boom() {
     for (let i = 0; i < 10; i++) {
         X_RANDOM_WALL.push(Math.floor(Math.random() * 8) * 100);
         Y_RANDOM_WALL.push(Math.floor(Math.random() * 5) * 100);
-
     }
     for (let i = 0; i < 5; i++) {
         X_RANDOM_BOOM.push(Math.floor(Math.random() * 8) * 100);
         Y_RANDOM_BOOM.push(Math.floor(Math.random() * 5) * 100);
-
     }
     this.showBoom = function () {
         for (let i = 0; i < X_RANDOM_BOOM.length; i++) {
@@ -204,28 +201,20 @@ function crash() {
         boomRight = X_RANDOM_BOOM[i] + boomWidth;
         boomUp = Y_RANDOM_BOOM[i];
         boomDown = Y_RANDOM_BOOM[i] + boomHeight;
-        if (carLeft > boomRight || carRight < boomLeft || carUp > boomDown || carDown < boomUp) {
-
-        } else {
+        if (carLeft <= boomRight && carRight >= boomLeft && carUp <= boomDown && carDown >= boomUp) {
             return true;
         }
-
     }
     for (let i = 0; i < X_RANDOM_WALL.length; i++) {
-        boomLeft = X_RANDOM_WALL[i];
-        boomRight = X_RANDOM_WALL[i] + wallWidth;
-        boomUp = Y_RANDOM_WALL[i];
-        boomDown = Y_RANDOM_WALL[i] + wallHeight;
-        if (carLeft > boomRight || carRight < boomLeft || carUp > boomDown || carDown < boomUp) {
-        } else {
+        wallLeft = X_RANDOM_WALL[i];
+        wallRight = X_RANDOM_WALL[i] + wallWidth;
+        wallUp = Y_RANDOM_WALL[i];
+        wallDown = Y_RANDOM_WALL[i] + wallHeight;
+        if (carLeft <= wallRight && carRight >= wallLeft && carUp <= wallDown && carDown >= wallUp) {
             return true;
-
         }
-
     }
-    if (carLeft > diamondRight || carRight < diamondLeft || carUp > diamondDown || carDown < diamondUp) {
-        console.log(false);
-    } else {
+    if (carLeft <= diamondRight && carRight >= diamondLeft && carUp <= diamondDown && carDown >= diamondUp) {
         diamond.removeDiamond();
         boom.showBoom();
         score += 500;
@@ -237,14 +226,12 @@ function crash() {
         console.log(X_RANDOM_BOOM);
         console.log(X_RANDOM_WALL);
         console.log(score);
-
     }
 
 
 }
 
 function GameBoard() {
-
 
     this.start = function () {
         window.addEventListener("keydown", gameBoard.moveCar)
