@@ -29,6 +29,7 @@ let diamondHeight = 28;
 let carSize = 20;
 
 let interval = 0;
+let interval1 = 0;
 let score = 0;
 let xDiamond = null;
 let yDiamond = null;
@@ -227,18 +228,36 @@ function Crash() {
         }
     }
 }
+// function LocalStorate() {
+//     if ( typeof(Storage) !== "undefined") {
+//         localStorage.clear();
+//         alert('Xóa Thành công');
+//     } else {
+//         alert('Trình duyệt của bạn đã quá cũ. Hãy nâng cấp trình duyệt ngay!');
+//     }
+// }
 
 function GameBoard(car, boom, diamond, crash) {
 
     this.start = function () {
-        window.addEventListener("keydown", this.moveCar)
+        window.addEventListener("keydown", this.moveCar);
         car.show();
         boom.showBoom();
-        setInterval(boom.randomBoom, 7000);
-        setInterval(boom.showBoom, 7000);
-        setInterval(diamond.showDiamond, 7000);
-        setInterval(boom.showWall, 100);
-        setInterval(this.gameOver, 100);
+        if (crash.crash()){
+            clearInterval(interval);
+
+        }else {
+            interval=setInterval(function () {
+                boom.randomBoom();
+                boom.showBoom();
+                diamond.showDiamond();
+            },7000);
+            interval=setInterval(function () {
+                boom.showWall();
+                this.gameOver();
+            },100);
+
+        }
     };
 
     this.gameOver = function () {
@@ -246,11 +265,12 @@ function GameBoard(car, boom, diamond, crash) {
         document.getElementById('boom').innerHTML = X_RANDOM_BOOM.length;
         document.getElementById('speed').innerHTML = car.speed + 80 + " km/h";
         if (crash.crash()) {
-            alert("Game Over!!! :" + "Your score: " + score);
+            confirm("afdads");
+            // confirm("Game Over!!! :" + "Your score: " + score);
             return;
         }
         if (X_RANDOM_BOOM.length == 10) {
-            alert("Game Over!!! :" + "Your score: " + score);
+            // alert("Game Over!!! :" + "Your score: " + score);
             return;
         }
     };
