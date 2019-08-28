@@ -229,14 +229,6 @@ function Crash() {
         }
     }
 }
-// function LocalStorate() {
-//     if ( typeof(Storage) !== "undefined") {
-//         localStorage.clear();
-//         alert('Xóa Thành công');
-//     } else {
-//         alert('Trình duyệt của bạn đã quá cũ. Hãy nâng cấp trình duyệt ngay!');
-//     }
-// }
 
 function GameBoard(car, boom, diamond, crash) {
 
@@ -253,10 +245,10 @@ function GameBoard(car, boom, diamond, crash) {
                 boom.randomBoom();
                 boom.showBoom();
                 diamond.showDiamond();
-            },7000);
+            },5000);
             interval1=setInterval(function () {
                 boom.showWall();
-                this.gameOver();
+                gameBoard.gameOver();
             },100);
 
         }
@@ -267,11 +259,14 @@ function GameBoard(car, boom, diamond, crash) {
         document.getElementById('boom').innerHTML = X_RANDOM_BOOM.length;
         document.getElementById('speed').innerHTML = car.speed + 80 + " km/h";
         if (crash.crash()) {
-
+            if (score > localStorage.getItem("Hight.score")){
+            localStorage.setItem("Hight score",score);}
             confirm("Game Over!!! :" + "Your score: " + score);
             return;
         }
         if (X_RANDOM_BOOM.length == 10) {
+            if (score > localStorage.getItem("Hight.score")){
+            localStorage.setItem("Hight score",score);}
             confirm("Game Over!!! :" + "Your score: " + score);
             return;
         }
@@ -328,7 +323,7 @@ function GameBoard(car, boom, diamond, crash) {
         }
     };
 }
-
+document.getElementById('hightscore').innerHTML="Hight score: " + localStorage.getItem('Hight score');
 let crash = new Crash();
 let diamond = new Diamond();
 let car = new Car();
