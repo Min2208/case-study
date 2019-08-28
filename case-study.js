@@ -32,8 +32,9 @@ let interval = 0;
 let score = 0;
 let xDiamond = null;
 let yDiamond = null;
-let xBoom=null;
-let yBoom=null;
+let xBoom = null;
+let yBoom = null;
+
 function Car() {
     this.xPosition = DEFAULT_CAR_X_POSITION;
     this.yPosition = DEFAULT_CAR_Y_POSITION;
@@ -55,7 +56,7 @@ function Car() {
                 }
                 break;
             case ORIENTATION_DOWN:
-                if (this.yPosition <= GAMEBOARD_HEIGHT - this.speed-35) {
+                if (this.yPosition <= GAMEBOARD_HEIGHT - this.speed - 35) {
                     this.yPosition += this.speed;
                 }
                 break;
@@ -65,7 +66,7 @@ function Car() {
                 }
                 break;
             case ORIENTATION_RIGHT:
-                if (this.xPosition <= GAMEBOARD_WIDTH - this.speed-35) {
+                if (this.xPosition <= GAMEBOARD_WIDTH - this.speed - 35) {
                     this.xPosition += this.speed;
                 }
                 break;
@@ -100,9 +101,9 @@ function Diamond() {
         let ctx = document.getElementById('gameCanvas').getContext('2d');
         let image = new Image();
         ctx.clearRect(xDiamond, yDiamond, 50, 28);
-        this.xPosition = Math.floor(Math.random() * (GAMEBOARD_WIDTH - 100));
-        this.yPosition = Math.floor(Math.random() * (GAMEBOARD_HEIGHT - 100));
-        let xPosition=this.xPosition;
+        this.xPosition = Math.floor((Math.random()*7)*100);
+        this.yPosition = Math.floor((Math.random()*3)*100)+130;
+        let xPosition = this.xPosition;
         let yPosition = this.yPosition;
         xDiamond = xPosition;
         yDiamond = yPosition;
@@ -114,11 +115,11 @@ function Diamond() {
         image.src = 'diamond.png';
 
     };
-    this.removeDiamond=function () {
+    this.removeDiamond = function () {
         let ctx = document.getElementById('gameCanvas').getContext('2d');
         ctx.clearRect(xDiamond, yDiamond, 50, 28);
-        xDiamond=null;
-        yDiamond=null;
+        xDiamond = null;
+        yDiamond = null;
     }
 
 }
@@ -133,7 +134,6 @@ function Boom() {
     this.showBoom = function () {
         console.log("show");
         let ctx = document.getElementById('gameCanvas').getContext('2d');
-        // ctx.clearRect(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
         for (let i = 0; i < X_RANDOM_BOOM.length; i++) {
 
             let image = new Image();
@@ -141,22 +141,22 @@ function Boom() {
             this.yPosition = Y_RANDOM_BOOM[i];
             let xPosition = this.xPosition;
             let yPosition = this.yPosition;
-            this.xClear=this.xPosition;
-            this.yClear=this.yPosition;
+            this.xClear = this.xPosition;
+            this.yClear = this.yPosition;
             image.onload = function () {
                 ctx.drawImage(image, xPosition, yPosition);
             };
             image.src = 'boom1.png';
         }
     };
-    this.removeBoom=function (x,y) {
+    this.removeBoom = function (x, y) {
         let ctx = document.getElementById('gameCanvas').getContext('2d');
         ctx.clearRect(x, y, boomWidth, boomHeight);
         this.showBoom();
     };
     this.randomBoom = function () {
         X_RANDOM_BOOM.push(Math.floor(Math.random() * 8) * 100);
-        Y_RANDOM_BOOM.push(Math.floor(Math.random() * 3) * 100+130);
+        Y_RANDOM_BOOM.push(Math.floor(Math.random() * 3) * 100 + 130);
 
     };
     this.showWall = function () {
@@ -173,63 +173,62 @@ function Boom() {
             image.src = 'wall.png';
         }
     };
-
-
 }
 
-function crash() {
-    let carLeft = car.xPosition;
-    let carRight = car.xPosition + carSize;
-    let carUp = car.yPosition;
-    let carDown = car.yPosition + carSize;
-    let boomLeft = 0;
-    let boomRight = 0;
-    let boomUp = 0;
-    let boomDown = 0;
-    let diamondLeft = xDiamond;
-    let diamondRight = xDiamond + diamondWidth;
-    let diamondUp = yDiamond;
-    let diamondDown = yDiamond + diamondHeight;
-    let wallLeft = 0;
-    let wallRight = 0;
-    let wallUp = 0;
-    let wallDown = 0;
+function Crash() {
+    this.crash = function () {
+        let carLeft = car.xPosition;
+        let carRight = car.xPosition + carSize;
+        let carUp = car.yPosition;
+        let carDown = car.yPosition + carSize;
+        let boomLeft = 0;
+        let boomRight = 0;
+        let boomUp = 0;
+        let boomDown = 0;
+        let diamondLeft = xDiamond;
+        let diamondRight = xDiamond + diamondWidth;
+        let diamondUp = yDiamond;
+        let diamondDown = yDiamond + diamondHeight;
+        let wallLeft = 0;
+        let wallRight = 0;
+        let wallUp = 0;
+        let wallDown = 0;
 
-    for (let i = 0; i < X_RANDOM_BOOM.length; i++) {
-        boomLeft = X_RANDOM_BOOM[i];
-        boomRight = X_RANDOM_BOOM[i] + boomWidth;
-        boomUp = Y_RANDOM_BOOM[i];
-        boomDown = Y_RANDOM_BOOM[i] + boomHeight;
-        if (carLeft <= boomRight && carRight >= boomLeft && carUp <= boomDown && carDown >= boomUp) {
-            return true;
+        for (let i = 0; i < X_RANDOM_BOOM.length; i++) {
+            boomLeft = X_RANDOM_BOOM[i];
+            boomRight = X_RANDOM_BOOM[i] + boomWidth;
+            boomUp = Y_RANDOM_BOOM[i];
+            boomDown = Y_RANDOM_BOOM[i] + boomHeight;
+            if (carLeft <= boomRight && carRight >= boomLeft && carUp <= boomDown && carDown >= boomUp) {
+                return true;
+            }
+        }
+        for (let i = 0; i < X_RANDOM_WALL.length; i++) {
+            wallLeft = X_RANDOM_WALL[i];
+            wallRight = X_RANDOM_WALL[i] + wallWidth;
+            wallUp = Y_RANDOM_WALL[i];
+            wallDown = Y_RANDOM_WALL[i] + wallHeight;
+            if (carLeft <= wallRight && carRight >= wallLeft && carUp <= wallDown && carDown >= wallUp) {
+                return true;
+            }
+        }
+        if (carLeft <= diamondRight && carRight >= diamondLeft && carUp <= diamondDown && carDown >= diamondUp) {
+            diamond.removeDiamond();
+            score += 500;
+            xBoom = X_RANDOM_BOOM[0];
+            yBoom = Y_RANDOM_BOOM[0];
+            X_RANDOM_BOOM.splice(0, 1);
+            Y_RANDOM_BOOM.splice(0, 1);
+            boom.removeBoom(xBoom, yBoom);
+            // boom.removeBoom(0);
+            console.log(X_RANDOM_BOOM);
+            console.log(X_RANDOM_WALL);
+            console.log(score);
         }
     }
-    for (let i = 0; i < X_RANDOM_WALL.length; i++) {
-        wallLeft = X_RANDOM_WALL[i];
-        wallRight = X_RANDOM_WALL[i] + wallWidth;
-        wallUp = Y_RANDOM_WALL[i];
-        wallDown = Y_RANDOM_WALL[i] + wallHeight;
-        if (carLeft <= wallRight && carRight >= wallLeft && carUp <= wallDown && carDown >= wallUp) {
-            return true;
-        }
-    }
-    if (carLeft <= diamondRight && carRight >= diamondLeft && carUp <= diamondDown && carDown >= diamondUp) {
-        diamond.removeDiamond();
-        score += 500;
-        xBoom=X_RANDOM_BOOM[0];
-        yBoom=Y_RANDOM_BOOM[0];
-        X_RANDOM_BOOM.splice(0, 1);
-        Y_RANDOM_BOOM.splice(0, 1);
-        boom.removeBoom(xBoom,yBoom);
-        // boom.removeBoom(0);
-        console.log(X_RANDOM_BOOM);
-        console.log(X_RANDOM_WALL);
-        console.log(score);
-    }
-
 }
 
-function GameBoard(car,boom,diamond) {
+function GameBoard(car, boom, diamond, crash) {
 
     this.start = function () {
         window.addEventListener("keydown", this.moveCar)
@@ -241,11 +240,12 @@ function GameBoard(car,boom,diamond) {
         setInterval(boom.showWall, 100);
         setInterval(this.gameOver, 100);
     };
+
     this.gameOver = function () {
         document.getElementById('score').innerHTML = score;
         document.getElementById('boom').innerHTML = X_RANDOM_BOOM.length;
-        document.getElementById('speed').innerHTML =car.speed + 80 + " km/h";
-        if (crash()) {
+        document.getElementById('speed').innerHTML = car.speed + 80 + " km/h";
+        if (crash.crash()) {
             alert("Game Over!!! :" + "Your score: " + score);
             return;
         }
@@ -286,10 +286,9 @@ function GameBoard(car,boom,diamond) {
                     car.move();
                     car.show();
                     gameBoard.gameOver();
-                    if (crash()) {
+                    if (crash.crash()) {
                         clearInterval(interval);
                     }
-
                 }, 100);
             } else {
                 if (interval) {
@@ -299,17 +298,18 @@ function GameBoard(car,boom,diamond) {
                     car.move();
                     car.show();
                     gameBoard.gameOver();
-                    if (crash()) {
+                    if (crash.crash()) {
                         clearInterval(interval);
                     }
                 }, 100);
             }
         }
-    }
+    };
 }
 
+let crash = new Crash();
 let diamond = new Diamond();
 let car = new Car();
 let boom = new Boom();
-let gameBoard = new GameBoard(car,boom,diamond);
+let gameBoard = new GameBoard(car, boom, diamond, crash);
 
