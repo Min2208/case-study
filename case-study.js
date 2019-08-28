@@ -267,12 +267,12 @@ function GameBoard(car, boom, diamond, crash) {
         document.getElementById('boom').innerHTML = X_RANDOM_BOOM.length;
         document.getElementById('speed').innerHTML = car.speed + 80 + " km/h";
         if (crash.crash()) {
-            confirm("afdads");
-            // confirm("Game Over!!! :" + "Your score: " + score);
+
+            confirm("Game Over!!! :" + "Your score: " + score);
             return;
         }
         if (X_RANDOM_BOOM.length == 10) {
-            // alert("Game Over!!! :" + "Your score: " + score);
+            confirm("Game Over!!! :" + "Your score: " + score);
             return;
         }
     };
