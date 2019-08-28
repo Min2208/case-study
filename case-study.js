@@ -30,6 +30,7 @@ let carSize = 20;
 
 let interval = 0;
 let interval1 = 0;
+let interval2 = 0;
 let score = 0;
 let xDiamond = null;
 let yDiamond = null;
@@ -244,15 +245,16 @@ function GameBoard(car, boom, diamond, crash) {
         car.show();
         boom.showBoom();
         if (crash.crash()){
-            clearInterval(interval);
+            clearInterval(interval2);
+            clearInterval(interval1);
 
         }else {
-            interval=setInterval(function () {
+            interval2=setInterval(function () {
                 boom.randomBoom();
                 boom.showBoom();
                 diamond.showDiamond();
             },7000);
-            interval=setInterval(function () {
+            interval1=setInterval(function () {
                 boom.showWall();
                 this.gameOver();
             },100);
