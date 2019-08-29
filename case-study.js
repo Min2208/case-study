@@ -272,7 +272,7 @@ function GameBoard(car, boom, diamond, crash) {
     };
     this.moveCar = function (event) {
         let orientation = 0;
-        switch (event.which) {
+        switch (event.keyCode) {
             case 17:
                 car.speed -= 5;
                 break;
