@@ -2,8 +2,8 @@
 //
 //
 
-const GAMEBOARD_WIDTH = 800;
-const GAMEBOARD_HEIGHT = 500;
+const GAMEBOARD_WIDTH = 900;
+const GAMEBOARD_HEIGHT = 700;
 
 const ORIENTATION_LEFT = "left";
 const ORIENTATION_RIGHT = "right";
@@ -13,7 +13,9 @@ const ORIENTATION_DOWN = "down";
 const DEFAULT_CAR_X_POSITION = 450;
 const DEFAULT_CAR_Y_POSITION = 250;
 const DEFAULT_CAR_ORIENTATION = ORIENTATION_UP;
-const DEFAULT_CAR_SPEED = 10;
+// const DEFAULT_CAR_SPEED = 10;
+let carSpeed=0;
+let autorun=0;
 
 let X_RANDOM_BOOM = [];
 let Y_RANDOM_BOOM = [];
@@ -26,7 +28,7 @@ let wallWidth = 120;
 let wallHeight = 26;
 let diamondWidth = 50;
 let diamondHeight = 28;
-let carSize = 20;
+let carSize = 21;
 
 let interval = 0;
 let interval1 = 0;
@@ -43,7 +45,7 @@ function Car() {
     this.orientation = DEFAULT_CAR_ORIENTATION;
     let xClear = this.xPosition;
     let yClear = this.yPosition;
-    this.speed = DEFAULT_CAR_SPEED;
+    this.speed = carSpeed;
 
     this.buildImage = function () {
         this.image = this.orientation + '.png';
@@ -51,6 +53,7 @@ function Car() {
     this.buildImage();
 
     this.move = function () {
+        console.log(this.speed);
         switch (this.orientation) {
             case ORIENTATION_UP:
                 if (this.yPosition >= this.speed) {
@@ -80,7 +83,7 @@ function Car() {
     this.show = function () {
         let ctx = document.getElementById('gameCanvas').getContext('2d');
         let image = new Image();
-        ctx.clearRect(xClear, yClear, 35, 35);
+        ctx.clearRect(xClear, yClear, 50, 50);
         let xPosition = this.xPosition;
         let yPosition = this.yPosition;
         xClear = xPosition;
@@ -103,8 +106,8 @@ function Diamond() {
         let ctx = document.getElementById('gameCanvas').getContext('2d');
         let image = new Image();
         ctx.clearRect(xDiamond, yDiamond, 50, 28);
-        this.xPosition = Math.floor((Math.random() * 7) * 100);
-        this.yPosition = Math.floor((Math.random() * 3) * 100) + 130;
+        this.xPosition = Math.floor((Math.random() * 8) * 100);
+        this.yPosition = Math.floor((Math.random() * 5) * 100) + 130;
         let xPosition = this.xPosition;
         let yPosition = this.yPosition;
         xDiamond = xPosition;
@@ -129,9 +132,9 @@ function Diamond() {
 function Boom() {
     this.xPosition = 0;
     this.yPosition = 0;
-    for (let i = 0; i < 15; i++) {
-        X_RANDOM_WALL.push(Math.floor(Math.random() * 8) * 100);
-        Y_RANDOM_WALL.push(Math.floor(Math.random() * 4) * 100);
+    for (let i = 0; i < 20; i++) {
+        X_RANDOM_WALL.push(Math.floor(Math.random() * 9) * 100);
+        Y_RANDOM_WALL.push(Math.floor(Math.random() * 6) * 100);
     }
     this.showBoom = function () {
         console.log("show");
@@ -158,7 +161,7 @@ function Boom() {
     };
     this.randomBoom = function () {
         X_RANDOM_BOOM.push(Math.floor(Math.random() * 8) * 100);
-        Y_RANDOM_BOOM.push(Math.floor(Math.random() * 3) * 100 + 130);
+        Y_RANDOM_BOOM.push(Math.floor(Math.random() * 5) * 100 + 130);
 
     };
     this.showWall = function () {
@@ -204,6 +207,8 @@ function Crash() {
             if (carLeft <= boomRight && carRight >= boomLeft && carUp <= boomDown && carDown >= boomUp) {
                 clearInterval(interval1);
                 clearInterval(interval2);
+                clearInterval(interval);
+                // location.reload();
                 return true;
             }
         }
@@ -215,6 +220,8 @@ function Crash() {
             if (carLeft <= wallRight && carRight >= wallLeft && carUp <= wallDown && carDown >= wallUp) {
                 clearInterval(interval1);
                 clearInterval(interval2);
+                clearInterval(interval);
+                // location.reload();
                 return true;
             }
         }
@@ -226,7 +233,6 @@ function Crash() {
             X_RANDOM_BOOM.splice(0, 1);
             Y_RANDOM_BOOM.splice(0, 1);
             boom.removeBoom(xBoom, yBoom);
-            // boom.removeBoom(0);
             console.log(X_RANDOM_BOOM);
             console.log(X_RANDOM_WALL);
             console.log(score);
@@ -235,8 +241,34 @@ function Crash() {
 }
 
 function GameBoard(car, boom, diamond, crash) {
+    this.player=null;
+    let ctx = document.getElementById('gameCanvas').getContext('2d');
+    this.gameLevel=function (level) {
+        if (car.speed==0) {
+            if (level.value == 1) {
+                car.speed = 10;
+                autorun = 7000;
+                level.style.backgroundColor = "#03a9f4";
+                this.player = "easy";
+
+            }
+            if (level.value == 2) {
+                car.speed = 20;
+                autorun = 6000;
+                level.style.backgroundColor = "#03a9f4";
+                this.player = "medium";
+            }
+            if (level.value == 3) {
+                car.speed = 30;
+                autorun = 4500;
+                level.style.backgroundColor = "#03a9f4";
+                this.player = "hard";
+            }
+        }
+    };
 
     this.start = function () {
+        console.log(carSpeed);
         window.addEventListener("keydown", this.moveCar);
         car.show();
         boom.showBoom();
@@ -244,41 +276,48 @@ function GameBoard(car, boom, diamond, crash) {
             boom.randomBoom();
             boom.showBoom();
             diamond.showDiamond();
-        }, 5000);
+        }, autorun);
         interval1 = setInterval(function () {
             boom.showWall();
             gameBoard.gameOver();
         }, 100);
     };
-
+    this.newGame=function () {
+        location.reload();
+    };
     this.gameOver = function () {
         document.getElementById('score').innerHTML = score;
         document.getElementById('boom').innerHTML = X_RANDOM_BOOM.length;
         document.getElementById('speed').innerHTML = car.speed + 80 + " km/h";
+
+
         if (crash.crash()) {
-            if (score > localStorage.getItem("Hight score")) {
-                localStorage.setItem("Hight score", score);
+            if (score > localStorage.getItem(this.player)) {
+                localStorage.setItem(this.player, score);
+
             }
-            confirm("Game Over!!! :" + "Your score: " + score);
+            ctx.clearRect(0,0,GAMEBOARD_WIDTH,GAMEBOARD_HEIGHT);
+            ctx.font = "40px Arial";
+            ctx.fillStyle="red";
+            ctx.fillText("Game Over ^.^ Your Score: " + score,150,300);
+
             return;
         }
-        if (X_RANDOM_BOOM.length == 10) {
-            if (score > localStorage.getItem("Hight score")) {
-                localStorage.setItem("Hight score", score);
+        if (X_RANDOM_BOOM.length == 5) {
+            if (score > localStorage.getItem(this.player)) {
+                localStorage.setItem(this.player, score);
             }
-            confirm("Game Over!!! :" + "Your score: " + score);
+            ctx.clearRect(0,0,GAMEBOARD_WIDTH,GAMEBOARD_HEIGHT);
+            ctx.font = "30px Arial";
+            ctx.fillText("Game Over",200,300);
+
             return;
         }
     };
+
     this.moveCar = function (event) {
         let orientation = 0;
         switch (event.keyCode) {
-            case 17:
-                car.speed -= 5;
-                break;
-            case 32:
-                car.speed += 5;
-                break;
             case 37:
                 orientation = ORIENTATION_LEFT;
                 break;
@@ -302,9 +341,6 @@ function GameBoard(car, boom, diamond, crash) {
                     car.move();
                     car.show();
                     gameBoard.gameOver();
-                    if (crash.crash()) {
-                        clearInterval(interval);
-                    }
                 }, 100);
             } else {
                 if (interval) {
@@ -314,16 +350,14 @@ function GameBoard(car, boom, diamond, crash) {
                     car.move();
                     car.show();
                     gameBoard.gameOver();
-                    if (crash.crash()) {
-                        clearInterval(interval);
-                    }
                 }, 100);
             }
         }
     };
 }
-
-document.getElementById('hightscore').innerHTML = "Hight score: " + localStorage.getItem('Hight score');
+document.getElementById('easy').innerHTML=localStorage.getItem("easy");
+document.getElementById('medium').innerHTML=localStorage.getItem("medium");
+document.getElementById('hard').innerHTML=localStorage.getItem("hard");
 let crash = new Crash();
 let diamond = new Diamond();
 let car = new Car();

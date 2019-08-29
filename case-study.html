@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Game</title>
     <style>
+        .score{
+            float: left;
+            width: 50%;
+        }
         table {
             width: 800px;
             border: 1px solid red;
@@ -24,10 +28,12 @@
 
         button {
             background-color: white;
+            width: 100px;
         }
         .row{
             float: left;
-            height: 500px;
+            height: 700px;
+
         }
         #manual{
             padding-left: 50px;
@@ -45,22 +51,33 @@
 <body>
 <div>
     <div class="row">
-        <canvas id="gameCanvas" width="800px" height="500px" style="border: 1px solid blue; background: url('bgr6.jpg')"></canvas>
+        <canvas id="gameCanvas" width="900px" height="700px" style="border: 1px solid blue; background: url('bgr6.jpg')"></canvas>
     </div>
     <div class="row" id="manual">
-        <p id="hightscore"></p>
+        <div>
+            <div class="score">
+                <p>Level</p>
+                <p>Easy</p>
+                <p>Medium</p>
+                <p>Hard</p>
+            </div>
+            <div class="score">
+                <p>Hight Score</p>
+                <p id="easy"></p>
+                <p id="medium"></p>
+                <p id="hard"></p>
+            </div>
+        </div>
         <hr>
         <h4>Manual</h4>
         <ol>
             <li id="gameover">Game Over:
                 <ul>
-                    <li>Total boom = 10</li>
+                    <li>Total boom = 5</li>
                     <li>Crash boom or wall</li>
                 </ul>
             </li>
             <li>Grasp Diamond: +500 point and total boom -1</li>
-            <li>Press Space: up speed</li>
-            <li>Press Ctrl: down speed</li>
             <li>Arrow Left: Move left</li>
             <li>Arrow Right: Move right</li>
             <li>Arrow Up: Move Up</li>
@@ -79,7 +96,13 @@
             <td id="speed"></td>
         </tr>
     </table>
+    <button onclick="gameBoard.gameLevel(this)" value="1">Easy</button>
+    <button onclick="gameBoard.gameLevel(this)" value="2">Medium</button>
+    <button onclick="gameBoard.gameLevel(this)" value="3">Hard</button>
     <button onclick="gameBoard.start()">Start Game</button>
+    <button onclick="gameBoard.newGame()">New Game</button>
+
+
 </div>
 <script src="case-study.js">
 </script>
