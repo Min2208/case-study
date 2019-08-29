@@ -129,7 +129,7 @@ function Diamond() {
 function Boom() {
     this.xPosition = 0;
     this.yPosition = 0;
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 15; i++) {
         X_RANDOM_WALL.push(Math.floor(Math.random() * 8) * 100);
         Y_RANDOM_WALL.push(Math.floor(Math.random() * 4) * 100);
     }
