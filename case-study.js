@@ -13,7 +13,6 @@ const ORIENTATION_DOWN = "down";
 const DEFAULT_CAR_X_POSITION = 450;
 const DEFAULT_CAR_Y_POSITION = 250;
 const DEFAULT_CAR_ORIENTATION = ORIENTATION_UP;
-// const DEFAULT_CAR_SPEED = 10;
 let carSpeed = 0;
 let autorun = 0;
 
@@ -38,7 +37,7 @@ let xDiamond = null;
 let yDiamond = null;
 let xBoom = null;
 let yBoom = null;
-let gameplayer = localStorage.getItem("gameplayer");
+
 
 function Car() {
     this.xPosition = DEFAULT_CAR_X_POSITION;
