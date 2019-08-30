@@ -48,7 +48,7 @@ function Car() {
     this.speed = carSpeed;
 
     this.buildImage = function () {
-        this.image = this.orientation + '.png';
+        this.image = "img/"+this.orientation + '.png';
     };
     this.buildImage();
 
@@ -116,7 +116,7 @@ function Diamond() {
         image.onload = function () {
             ctx.drawImage(image, xPosition, yPosition);
         };
-        image.src = 'diamond.png';
+        image.src = 'img/diamond.png';
 
     };
     this.removeDiamond = function () {
@@ -149,7 +149,7 @@ function Boom() {
             image.onload = function () {
                 ctx.drawImage(image, xPosition, yPosition);
             };
-            image.src = 'boom1.png';
+            image.src = 'img/boom1.png';
         }
     };
     this.removeBoom = function (x, y) {
@@ -173,7 +173,7 @@ function Boom() {
             image.onload = function () {
                 ctx.drawImage(image, xPosition, yPosition);
             };
-            image.src = 'wall.png';
+            image.src = 'img/wall.png';
         }
     };
 }
