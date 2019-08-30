@@ -14,8 +14,8 @@ const DEFAULT_CAR_X_POSITION = 450;
 const DEFAULT_CAR_Y_POSITION = 250;
 const DEFAULT_CAR_ORIENTATION = ORIENTATION_UP;
 // const DEFAULT_CAR_SPEED = 10;
-let carSpeed=0;
-let autorun=0;
+let carSpeed = 0;
+let autorun = 0;
 
 let X_RANDOM_BOOM = [];
 let Y_RANDOM_BOOM = [];
@@ -53,7 +53,6 @@ function Car() {
     this.buildImage();
 
     this.move = function () {
-        console.log(this.speed);
         switch (this.orientation) {
             case ORIENTATION_UP:
                 if (this.yPosition >= this.speed) {
@@ -137,7 +136,6 @@ function Boom() {
         Y_RANDOM_WALL.push(Math.floor(Math.random() * 6) * 100);
     }
     this.showBoom = function () {
-        console.log("show");
         let ctx = document.getElementById('gameCanvas').getContext('2d');
         for (let i = 0; i < X_RANDOM_BOOM.length; i++) {
 
@@ -208,7 +206,6 @@ function Crash() {
                 clearInterval(interval1);
                 clearInterval(interval2);
                 clearInterval(interval);
-                // location.reload();
                 return true;
             }
         }
@@ -221,7 +218,6 @@ function Crash() {
                 clearInterval(interval1);
                 clearInterval(interval2);
                 clearInterval(interval);
-                // location.reload();
                 return true;
             }
         }
@@ -233,18 +229,16 @@ function Crash() {
             X_RANDOM_BOOM.splice(0, 1);
             Y_RANDOM_BOOM.splice(0, 1);
             boom.removeBoom(xBoom, yBoom);
-            console.log(X_RANDOM_BOOM);
-            console.log(X_RANDOM_WALL);
-            console.log(score);
+            ;
         }
     }
 }
 
 function GameBoard(car, boom, diamond, crash) {
-    this.player=null;
+    this.player = null;
     let ctx = document.getElementById('gameCanvas').getContext('2d');
-    this.gameLevel=function (level) {
-        if (car.speed==0) {
+    this.gameLevel = function (level) {
+        if (car.speed == 0) {
             if (level.value == 1) {
                 car.speed = 10;
                 autorun = 7000;
@@ -268,7 +262,6 @@ function GameBoard(car, boom, diamond, crash) {
     };
 
     this.start = function () {
-        console.log(carSpeed);
         window.addEventListener("keydown", this.moveCar);
         car.show();
         boom.showBoom();
@@ -282,24 +275,28 @@ function GameBoard(car, boom, diamond, crash) {
             gameBoard.gameOver();
         }, 100);
     };
-    this.newGame=function () {
+    this.newGame = function () {
         location.reload();
     };
     this.gameOver = function () {
         document.getElementById('score').innerHTML = score;
         document.getElementById('boom').innerHTML = X_RANDOM_BOOM.length;
         document.getElementById('speed').innerHTML = car.speed + 80 + " km/h";
-
-
+        console.log(car.speed);
+        if (car.speed <= 20 && score == 2000) {
+            car.speed = 20;
+        } else if (car.speed < 30 && score == 4000) {
+            car.speed = 30;
+        }
         if (crash.crash()) {
             if (score > localStorage.getItem(this.player)) {
                 localStorage.setItem(this.player, score);
 
             }
-            ctx.clearRect(0,0,GAMEBOARD_WIDTH,GAMEBOARD_HEIGHT);
+            ctx.clearRect(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
             ctx.font = "40px Arial";
-            ctx.fillStyle="red";
-            ctx.fillText("Game Over ^.^ Your Score: " + score,150,300);
+            ctx.fillStyle = "red";
+            ctx.fillText("Game Over ^.^ Your Score: " + score, 150, 300);
 
             return;
         }
@@ -307,9 +304,9 @@ function GameBoard(car, boom, diamond, crash) {
             if (score > localStorage.getItem(this.player)) {
                 localStorage.setItem(this.player, score);
             }
-            ctx.clearRect(0,0,GAMEBOARD_WIDTH,GAMEBOARD_HEIGHT);
+            ctx.clearRect(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
             ctx.font = "30px Arial";
-            ctx.fillText("Game Over",200,300);
+            ctx.fillText("Game Over", 200, 300);
 
             return;
         }
@@ -355,9 +352,10 @@ function GameBoard(car, boom, diamond, crash) {
         }
     };
 }
-document.getElementById('easy').innerHTML=localStorage.getItem("easy");
-document.getElementById('medium').innerHTML=localStorage.getItem("medium");
-document.getElementById('hard').innerHTML=localStorage.getItem("hard");
+
+document.getElementById('easy').innerHTML = localStorage.getItem("easy");
+document.getElementById('medium').innerHTML = localStorage.getItem("medium");
+document.getElementById('hard').innerHTML = localStorage.getItem("hard");
 let crash = new Crash();
 let diamond = new Diamond();
 let car = new Car();
