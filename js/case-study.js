@@ -323,6 +323,14 @@ function GameBoard(car, boom, diamond, crash) {
             }
         }
     };
+    this.showHightScore=function () {
+        document.getElementById('easy').innerHTML = localStorage.getItem("easy");
+        document.getElementById('medium').innerHTML = localStorage.getItem("medium");
+        document.getElementById('hard').innerHTML = localStorage.getItem("hard");
+        document.getElementById('easy1').innerHTML = localStorage.getItem("easy1");
+        document.getElementById('medium1').innerHTML = localStorage.getItem("medium1");
+        document.getElementById('hard1').innerHTML = localStorage.getItem("hard1");
+    };
 
     this.moveCar = function (event) {
         let orientation = 0;
@@ -365,12 +373,7 @@ function GameBoard(car, boom, diamond, crash) {
     };
 }
 
-document.getElementById('easy').innerHTML = localStorage.getItem("easy");
-document.getElementById('medium').innerHTML = localStorage.getItem("medium");
-document.getElementById('hard').innerHTML = localStorage.getItem("hard");
-document.getElementById('easy1').innerHTML = localStorage.getItem("easy1");
-document.getElementById('medium1').innerHTML = localStorage.getItem("medium1");
-document.getElementById('hard1').innerHTML = localStorage.getItem("hard1");
+
 let crash = new Crash();
 let diamond = new Diamond();
 let car = new Car();
