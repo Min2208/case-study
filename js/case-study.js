@@ -60,7 +60,7 @@ function Car() {
                 }
                 break;
             case ORIENTATION_DOWN:
-                if (this.yPosition <= GAMEBOARD_HEIGHT - this.speed - 35) {
+                if (this.yPosition <= GAMEBOARD_HEIGHT - this.speed - 50) {
                     this.yPosition += this.speed;
                 }
                 break;
@@ -70,7 +70,7 @@ function Car() {
                 }
                 break;
             case ORIENTATION_RIGHT:
-                if (this.xPosition <= GAMEBOARD_WIDTH - this.speed - 35) {
+                if (this.xPosition <= GAMEBOARD_WIDTH - this.speed - 50) {
                     this.xPosition += this.speed;
                 }
                 break;
