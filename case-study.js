@@ -38,7 +38,7 @@ let xDiamond = null;
 let yDiamond = null;
 let xBoom = null;
 let yBoom = null;
-let gameplayer=localStorage.getItem("gameplayer");
+let gameplayer = localStorage.getItem("gameplayer");
 
 function Car() {
     this.xPosition = DEFAULT_CAR_X_POSITION;
@@ -230,14 +230,14 @@ function Crash() {
             X_RANDOM_BOOM.splice(0, 1);
             Y_RANDOM_BOOM.splice(0, 1);
             boom.removeBoom(xBoom, yBoom);
-            ;
+
         }
     }
 }
 
 function GameBoard(car, boom, diamond, crash) {
     this.hightScore = null;
-    this.gameplayer=null;
+    this.gameplayer = null;
     let ctx = document.getElementById('gameCanvas').getContext('2d');
     this.gameLevel = function (level) {
         if (car.speed == 0) {
@@ -246,7 +246,7 @@ function GameBoard(car, boom, diamond, crash) {
                 autorun = 7000;
                 level.style.backgroundColor = "#03a9f4";
                 this.hightScore = "easy";
-                this.gameplayer="easy1";
+                this.gameplayer = "easy1";
 
             }
             if (level.value == 2) {
@@ -254,69 +254,74 @@ function GameBoard(car, boom, diamond, crash) {
                 autorun = 6000;
                 level.style.backgroundColor = "#03a9f4";
                 this.hightScore = "medium";
-                this.gameplayer="medium1";
+                this.gameplayer = "medium1";
             }
             if (level.value == 3) {
                 car.speed = 30;
                 autorun = 4500;
                 level.style.backgroundColor = "#03a9f4";
                 this.hightScore = "hard";
-                this.gameplayer="hard1";
+                this.gameplayer = "hard1";
             }
         }
     };
 
     this.start = function () {
-        window.addEventListener("keydown", this.moveCar);
-        car.show();
-        boom.showBoom();
-        interval2 = setInterval(function () {
-            boom.randomBoom();
+        if (car.speed == 0) {
+            confirm("Please! Choose level");
+        } else {
+            window.addEventListener("keydown", this.moveCar);
+            car.show();
             boom.showBoom();
-            diamond.showDiamond();
-        }, autorun);
-        interval1 = setInterval(function () {
-            boom.showWall();
-            gameBoard.gameOver();
-        }, 100);
-    };
-    this.newGame = function () {
-        location.reload();
-    };
-    this.gameOver = function () {
-        document.getElementById('score').innerHTML = score;
-        document.getElementById('boom').innerHTML = X_RANDOM_BOOM.length;
-        document.getElementById('speed').innerHTML = car.speed + 80 + " km/h";
-        console.log(car.speed);
-        if (car.speed <= 20 && score == 2000) {
-            car.speed = 20;
-        } else if (car.speed < 30 && score == 4000) {
-            car.speed = 30;
+            interval2 = setInterval(function () {
+                boom.randomBoom();
+                boom.showBoom();
+                diamond.showDiamond();
+            }, autorun);
+            interval1 = setInterval(function () {
+                boom.showWall();
+                gameBoard.gameOver();
+            }, 100);
         }
-        if (crash.crash()) {
-            if (score > localStorage.getItem(this.hightScore)) {
-                localStorage.setItem(this.gameplayer,prompt("Hight score!! Enter your name"));
-                localStorage.setItem(this.hightScore, score);
-
+        ;
+        this.newGame = function () {
+            location.reload();
+        };
+        this.gameOver = function () {
+            document.getElementById('score').innerHTML = score;
+            document.getElementById('boom').innerHTML = X_RANDOM_BOOM.length;
+            document.getElementById('speed').innerHTML = car.speed + 80 + " km/h";
+            console.log(car.speed);
+            if (car.speed <= 20 && score == 2000) {
+                car.speed = 20;
+            } else if (car.speed < 30 && score == 4000) {
+                car.speed = 30;
             }
-            ctx.clearRect(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
-            ctx.font = "40px Arial";
-            ctx.fillStyle = "red";
-            ctx.fillText("Game Over ^.^ Your Score: " + score, 150, 300);
+            if (crash.crash()) {
+                if (score > localStorage.getItem(this.hightScore)) {
+                    localStorage.setItem(this.gameplayer, prompt("Hight score!! Enter your name"));
+                    localStorage.setItem(this.hightScore, score);
 
-            return;
-        }
-        if (X_RANDOM_BOOM.length == 5) {
-            if (score > localStorage.getItem(this.hightScore)) {
-                localStorage.setItem(this.gameplayer,prompt("Hight score!! Enter your name"));
-                localStorage.setItem(this.hightScore, score);
+                }
+                ctx.clearRect(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
+                ctx.font = "40px Arial";
+                ctx.fillStyle = "red";
+                ctx.fillText("Game Over ^.^ Your Score: " + score, 150, 300);
 
+                return;
             }
-            ctx.clearRect(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
-            ctx.font = "30px Arial";
-            ctx.fillText("Game Over", 200, 300);
+            if (X_RANDOM_BOOM.length == 5) {
+                if (score > localStorage.getItem(this.hightScore)) {
+                    localStorage.setItem(this.gameplayer, prompt("Hight score!! Enter your name"));
+                    localStorage.setItem(this.hightScore, score);
 
-            return;
+                }
+                ctx.clearRect(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
+                ctx.font = "30px Arial";
+                ctx.fillText("Game Over", 200, 300);
+
+                return;
+            }
         }
     };
 
